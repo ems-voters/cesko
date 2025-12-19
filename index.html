@@ -13,9 +13,11 @@
         .map-link { color: #10b981; text-decoration: underline; font-weight: bold; }
         .map-link:hover { color: #064e3b; }
         .top-logo { height: 75px; width: auto; display: block; margin: 0 auto 15px auto; }
+        
         /* Custom Text Styles */
         .header-text-green { color: #054f3b; font-weight: 600; text-align: center; margin-bottom: 4px; font-size: 1.1rem; }
-        .header-text-red { color: #dc2626; text-align: center; margin-bottom: 25px; font-size: 0.85rem; }
+        .header-text-red { color: #dc2626; text-align: center; margin-bottom: 4px; font-size: 0.85rem; }
+        .header-text-black { color: #000000; text-align: center; margin-bottom: 25px; font-size: 0.85rem; font-weight: 400; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -30,16 +32,19 @@
         <div class="header-text-red">
             ვებგვერდი განკუთვნილია მხოლოდ ამომრჩეველთათვის - საკუთარი და ოჯახის წევრების მონაცემების გადასამოწმებლად!
         </div>
+        <div class="header-text-black">
+            (01.11.2025 მდგომარეობით)
+        </div>
 
         <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-8 mb-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2"></label>
-                    <input id="personalId" type="text" class="w-full p-3 bg-gray-50 border border-emerald-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500" placeholder="პირადი ნომერი">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">პირადი ნომერი</label>
+                    <input id="personalId" type="text" class="w-full p-3 bg-gray-50 border border-emerald-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500" placeholder="01955003022">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2"></label>
-                    <input id="lastName" type="text" class="w-full p-3 bg-gray-50 border border-emerald-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500" placeholder="გვარი">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">გვარი</label>
+                    <input id="lastName" type="text" class="w-full p-3 bg-gray-50 border border-emerald-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500" placeholder="თინიკაშვილი">
                 </div>
             </div>
             <button onclick="searchData()" class="w-full bg-cec-green text-white py-4 rounded-lg font-bold hover:bg-emerald-900 transition shadow-md">ძიება</button>
@@ -100,7 +105,7 @@
                 surname: "თინიკაშვილი",
                 birth: "16.11.2005",
                 mapUrl: "https://maps.app.goo.gl/cUPnXDXatdqjkmxA8",
-                address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 7ა, ბინა 18",
+                address: "ცოდნის კარის ქუჩა 7",
                 photo: "tinka.jpg"
             }
         ];
