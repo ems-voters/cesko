@@ -3,39 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ამომრჩეველთა პორტალი - CEC</title>
+    <title>საარჩევნო პორტალი - CEC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f3f7f4; }
+        /* Background changed to solid white */
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; margin: 0; padding: 0; }
         .bg-cec-green { background-color: #054f3b; }
         .hidden { display: none; }
         .map-link { color: #10b981; text-decoration: underline; font-weight: bold; }
         .map-link:hover { color: #064e3b; }
+        /* Logo styling for top placement */
+        .top-logo { height: 75px; width: auto; display: block; margin: 0 auto 30px auto; }
     </style>
 </head>
 <body class="min-h-screen">
 
-    <header class="bg-cec-green text-white p-5 border-b-4 border-emerald-400 shadow-md">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-bold">საარჩევნო პორტალი</h1>
-                <p class="text-[10px] text-emerald-300 tracking-widest uppercase font-semibold">CEC საინფორმაციო სისტემა</p>
-            </div>
-            <div class="text-xs font-bold bg-emerald-800 px-3 py-1 rounded">GE</div>
-        </div>
-    </header>
+    <main class="max-w-4xl mx-auto p-6 pt-12">
+        
+        <img src="cesko.jpg" alt="CESKO Logo" class="top-logo">
 
-    <main class="max-w-4xl mx-auto p-6">
-        <div class="bg-white rounded-xl shadow-lg border border-emerald-100 p-8 mb-8">
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-8 mb-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">პირადი ნომერი</label>
-                    <input id="personalId" type="text" class="w-full p-3 bg-gray-50 border border-emerald-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500" placeholder="01955003022">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2"></label>
+                    <input id="personalId" type="text" class="w-full p-3 bg-gray-50 border border-emerald-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500" placeholder="პირადი ნომერი">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">გვარი</label>
-                    <input id="lastName" type="text" class="w-full p-3 bg-gray-50 border border-emerald-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500" placeholder="თინიკაშვილი">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2"></label>
+                    <input id="lastName" type="text" class="w-full p-3 bg-gray-50 border border-emerald-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500" placeholder="გვარი">
                 </div>
             </div>
             <button onclick="searchData()" class="w-full bg-cec-green text-white py-4 rounded-lg font-bold hover:bg-emerald-900 transition shadow-md">ძიება</button>
