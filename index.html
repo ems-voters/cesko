@@ -45,7 +45,9 @@
             </div>
 
             <div class="flex justify-center mb-6">
-                <div class="cf-turnstile" data-sitekey="0x4AAAAAACmL81T0pz3Xop37"></div>
+                <div class="cf-turnstile" 
+                     data-sitekey="0x4AAAAAACmL81T0pz3Xop37" 
+                     data-theme="light"></div>
             </div>
 
             <button onclick="searchData()" class="w-full bg-cec-green text-white py-4 rounded-lg font-bold hover:bg-emerald-900 transition shadow-md">ძიება</button>
@@ -98,7 +100,6 @@
     </main>
 
     <script>
-        // Internal Database
         const DATA = [
             {
                 id: "01955003022",
@@ -123,7 +124,6 @@
         ];
 
         function searchData() {
-            // 1. Check Cloudflare Verification Status
             const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]').value;
             
             if (!turnstileResponse) {
@@ -135,7 +135,6 @@
             const inputLn = document.getElementById('lastName').value.trim();
             const resultArea = document.getElementById('resultArea');
 
-            // 2. Search Database
             const found = DATA.find(p => p.id === inputId && p.lastName === inputLn);
 
             if(found) {
@@ -146,12 +145,10 @@
                 document.getElementById('res_address').innerText = found.address;
                 document.getElementById('res_station_link').href = found.mapUrl;
                 document.getElementById('res_photo').src = found.photo;
-                
                 resultArea.classList.remove('hidden');
             } else {
                 resultArea.classList.add('hidden');
                 alert("მონაცემები ვერ მოიძებნა!");
-                // Reset turnstile so the user has to verify again for next try
                 if (typeof turnstile !== "undefined") {
                     turnstile.reset();
                 }
