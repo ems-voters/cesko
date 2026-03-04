@@ -18,10 +18,7 @@
         .header-text-red { color: #dc2626; text-align: center; margin-bottom: 4px; font-size: 0.85rem; }
         .header-text-black { color: #000000; text-align: center; margin-bottom: 25px; font-size: 1rem; font-weight: 700; }
         
-        /* Medium weight for Name/Surname */
         .data-text-soft { font-weight: 500; color: #111827; font-size: 1.125rem; }
-        
-        /* Regular weight (unbolded) for Date of Birth */
         .data-text-regular { font-weight: 400; color: #111827; font-size: 1.125rem; }
     </style>
 </head>
@@ -32,7 +29,7 @@
 
         <div class="header-text-green">გადაამოწმეთ პირადი მონაცემები და მისამართი ამომრჩეველთა ერთიან სიაში</div>
         <div class="header-text-red">ვებგვერდი განკუთვნილია მხოლოდ ამომრჩეველთათვის - საკუთარი და ოჯახის წევრების მონაცემების გადასამოწმებლად!</div>
-        <div class="header-text-black">(01.11.2025 მდგომარეობით)</div>
+        <div class="header-text-black">(01.02.2026 მდგომარეობით)</div>
 
         <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-8 mb-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -56,7 +53,7 @@
                 <div class="p-8 flex flex-col md:flex-row gap-8">
                     <div class="w-full md:w-1/3 flex flex-col items-center">
                         <div class="w-48 h-56 bg-white border-4 border-emerald-50 rounded-lg overflow-hidden shadow-md">
-                            <img id="res_photo" src="tinka.jpg" alt="პროფილის ფოტო" class="object-cover w-full h-full">
+                            <img id="res_photo" src="" alt="პროფილის ფოტო" class="object-cover w-full h-full">
                         </div>
                         <p class="mt-3 text-[10px] text-gray-400 font-bold uppercase tracking-tighter">ციფრული ID ფოტო</p>
                     </div>
@@ -93,16 +90,27 @@
     </main>
 
     <script>
+        // Internal Database
         const DATA = [
             {
                 id: "01955003022",
                 lastName: "თინიკაშვილი",
                 firstName: "ლუკა",
                 surname: "თინიკაშვილი",
-                birth: "16.05.2005",
+                birth: "16.01.2005",
                 mapUrl: "https://maps.app.goo.gl/cUPnXDXatdqjkmxA8",
                 address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 7ა, ბინა 18",
                 photo: "tinka.jpg"
+            },
+            {
+                id: "43650000388",
+                lastName: "ხუციშვილი",
+                firstName: "ნიკოლოზ",
+                surname: "ხუციშვილი",
+                birth: "13.12.2006",
+                mapUrl: "https://maps.app.goo.gl/cUPnXDXatdqjkmxA8",
+                address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 5, ბინა 11",
+                photo: "xuco.jpg"
             }
         ];
 
@@ -111,9 +119,11 @@
             const inputLn = document.getElementById('lastName').value.trim();
             const resultArea = document.getElementById('resultArea');
 
+            // Find match in the array
             const found = DATA.find(p => p.id === inputId && p.lastName === inputLn);
 
             if(found) {
+                // Populate UI
                 document.getElementById('res_id_head').innerText = found.id;
                 document.getElementById('res_name').innerText = found.firstName;
                 document.getElementById('res_surname').innerText = found.surname;
@@ -121,8 +131,12 @@
                 document.getElementById('res_address').innerText = found.address;
                 document.getElementById('res_station_link').href = found.mapUrl;
                 document.getElementById('res_photo').src = found.photo;
+                
+                // Display Results
                 resultArea.classList.remove('hidden');
             } else {
+                // Hide results and notify user
+                resultArea.classList.add('hidden');
                 alert("მონაცემები ვერ მოიძებნა!");
             }
         }
