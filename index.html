@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>საარჩევნო პორტალი - CEC</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #ffffff; margin: 0; padding: 0; }
@@ -29,7 +32,7 @@
 
         <div class="header-text-green">გადაამოწმეთ პირადი მონაცემები და მისამართი ამომრჩეველთა ერთიან სიაში</div>
         <div class="header-text-red">ვებგვერდი განკუთვნილია მხოლოდ ამომრჩეველთათვის - საკუთარი და ოჯახის წევრების მონაცემების გადასამოწმებლად!</div>
-        <div class="header-text-black">(01.02.2026 მდგომარეობით)</div>
+        <div class="header-text-black">(01.11.2025 მდგომარეობით)</div>
 
         <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-8 mb-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -40,6 +43,11 @@
                     <input id="lastName" type="text" class="w-full p-3 bg-gray-50 border border-emerald-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500" placeholder="გვარი">
                 </div>
             </div>
+
+            <div class="flex justify-center mb-6">
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAACmL81T0pz3Xop37"></div>
+            </div>
+
             <button onclick="searchData()" class="w-full bg-cec-green text-white py-4 rounded-lg font-bold hover:bg-emerald-900 transition shadow-md">ძიება</button>
         </div>
 
@@ -115,15 +123,22 @@
         ];
 
         function searchData() {
+            // 1. Check Cloudflare Verification Status
+            const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]').value;
+            
+            if (!turnstileResponse) {
+                alert("გთხოვთ, გაიაროთ ვერიფიკაცია (Robot Check)!");
+                return;
+            }
+
             const inputId = document.getElementById('personalId').value.trim();
             const inputLn = document.getElementById('lastName').value.trim();
             const resultArea = document.getElementById('resultArea');
 
-            // Find match in the array
+            // 2. Search Database
             const found = DATA.find(p => p.id === inputId && p.lastName === inputLn);
 
             if(found) {
-                // Populate UI
                 document.getElementById('res_id_head').innerText = found.id;
                 document.getElementById('res_name').innerText = found.firstName;
                 document.getElementById('res_surname').innerText = found.surname;
@@ -132,12 +147,14 @@
                 document.getElementById('res_station_link').href = found.mapUrl;
                 document.getElementById('res_photo').src = found.photo;
                 
-                // Display Results
                 resultArea.classList.remove('hidden');
             } else {
-                // Hide results and notify user
                 resultArea.classList.add('hidden');
                 alert("მონაცემები ვერ მოიძებნა!");
+                // Reset turnstile so the user has to verify again for next try
+                if (typeof turnstile !== "undefined") {
+                    turnstile.reset();
+                }
             }
         }
     </script>
