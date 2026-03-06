@@ -25,6 +25,7 @@
             margin-bottom: 20px; 
             font-size: 1.125rem; 
             font-family: 'Inter', sans-serif;
+            text-shadow: none; 
         }
         
         .header-text-red { 
@@ -45,6 +46,7 @@
         
         .data-text-regular { font-weight: 400; color: #111827; font-size: 1.125rem; }
 
+        /* UPDATED: Reduced width from 330px to 220px */
         .btn-search { 
             background-color: #88d1a5; 
             border-radius: 20px; 
@@ -57,24 +59,24 @@
 </head>
 <body class="min-h-screen">
 
-    <main class="max-w-screen-xl mx-auto p-4 pt-12">
+    <main class="max-w-4xl mx-auto p-6 pt-12">
         
-        <div style="background-color: #eaf4f0;" class="rounded-[3rem] shadow-lg border border-gray-200 p-8 md:px-16 md:py-10 mb-8">
+        <div style="background-color: #eaf4f0;" class="rounded-[3rem] shadow-lg border border-gray-200 p-10 mb-8">
             
             <img src="cesko.jpg" alt="CESKO Logo" class="top-logo mb-6">
             
             <div class="header-text-green">გადაამოწმეთ პირადი მონაცემები და მისამართი ამომრჩეველთა ერთიან სიაში</div>
             
-            <div class="header-text-red px-10">ვებგვერდი განკუთვნილია მხოლოდ ამომრჩეველთათვის - საკუთარი და ოჯახის წევრების მონაცების გადასამოწმებლად!</div>
+            <div class="header-text-red">ვებგვერდი განკუთვნილია მხოლოდ ამომრჩეველთათვის - საკუთარი და ოჯახის წევრების მონაცემების გადასამოწმებლად!</div>
             
             <div class="header-text-black">(01.02.2026 მდგომარეობით)</div>
 
             <div class="flex flex-col items-center gap-4 mb-6">
-                <div class="w-full max-w-2xl">
-                    <input id="personalId" type="text" class="w-full p-4 bg-white border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-center data-text-regular" placeholder="პირადი ნომერი">
+                <div class="w-full max-w-sm">
+                    <input id="personalId" type="text" class="w-full p-3 bg-white border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-center data-text-regular" placeholder="პირადი ნომერი">
                 </div>
-                <div class="w-full max-w-2xl">
-                    <input id="lastName" type="text" class="w-full p-4 bg-white border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-center data-text-regular" placeholder="გვარი">
+                <div class="w-full max-w-sm">
+                    <input id="lastName" type="text" class="w-full p-3 bg-white border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-center data-text-regular" placeholder="გვარი">
                 </div>
             </div>
 
@@ -139,7 +141,7 @@
                 firstName: "ლუკა",
                 surname: "თინიკაშვილი",
                 birth: "16.01.2007",
-                mapUrl: "http://googleusercontent.com/maps.google.com/3",
+                mapUrl: "maps.google.com/0",
                 address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 7ა, ბინა 18",
                 photo: "tinka.jpg"
             }
