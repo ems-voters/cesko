@@ -5,265 +5,330 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>საარჩევნო პორტალი - CEC</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
-        body { font-family: 'Inter', sans-serif; background-color: #ffffff; margin: 0; padding: 0; }
-        .hidden { display: none; }
+        body { font-family: 'Inter', sans-serif; background: #fff; margin: 0; padding: 0; }
+        .hidden { display: none !important; }
         .map-link { color: #10b981; text-decoration: underline; font-weight: bold; }
         .map-link:hover { color: #064e3b; }
-        
-        .top-logo { height: 75px; width: auto; display: block; margin: 0 auto 25px auto; }
-        
-        .header-text-green { 
-            color: #51ba78; 
-            font-weight: 500; 
-            text-align: center; 
-            margin-bottom: 20px; 
-            font-size: 1.125rem; 
-            font-family: 'Inter', sans-serif;
-            text-shadow: none; 
-        }
-        
-        .header-text-red { 
-            color: #dc2626; 
-            text-align: center; 
-            margin-bottom: 40px; 
-            font-size: 0.75rem; 
-            line-height: 1.4;
-        }
-        
-        .header-text-black { 
-            color: #000000; 
-            text-align: center; 
-            margin-bottom: 25px; 
-            font-size: 1rem; 
-            font-weight: 700; 
-        }
-        
-        .data-text-regular { font-weight: 400; color: #111827; font-size: 1.125rem; }
+        .top-logo  { height:75px; width:auto; display:block; margin:0 auto 25px; }
+        .header-text-green { color:#51ba78; font-weight:500; text-align:center; margin-bottom:20px; font-size:1.125rem; }
+        .header-text-red   { color:#dc2626; text-align:center; margin-bottom:40px; font-size:.75rem; line-height:1.4; }
+        .header-text-black { color:#000; text-align:center; margin-bottom:25px; font-size:1rem; font-weight:700; }
+        .data-text-regular { font-weight:400; color:#111827; font-size:1.125rem; }
+        .btn-search { background:#88d1a5; border-radius:20px; width:220px; font-family:'Inter',sans-serif; color:#fff; }
+        .btn-search:hover { background:#76bc92; }
 
-        .btn-search { 
-            background-color: #88d1a5; 
-            border-radius: 20px; 
-            width: 220px; 
-            font-family: 'Inter', sans-serif; 
-            color: #ffffff; 
+        /* ── Desktop table ── */
+        .cec-table-header { background:#52ba78; color:#fff; font-weight:bold; text-align:center; }
+        .cec-table-row:nth-child(even) { background:#f4fbf7; }
+        .cec-table-row:nth-child(odd)  { background:#fff; }
+
+        /* ── Mobile result card (search result) ── */
+        .mob-card {
+            background:#eaf5ee; border:2px solid #52ba78; border-radius:24px;
+            padding:24px 20px 20px; display:flex; flex-direction:column;
+            align-items:center; gap:6px;
         }
-        .btn-search:hover { background-color: #76bc92; }
+        .mob-photo { width:130px; height:160px; object-fit:cover; border-radius:6px; margin-bottom:10px; display:block; }
+        .mob-name  { font-size:1.1rem; font-weight:500; color:#111; text-align:center; line-height:1.4; }
+        .mob-birth { font-size:.95rem; color:#111; text-align:center; }
+        .mob-type  { font-size:1rem; color:#52ba78; font-weight:500; text-align:center; margin:2px 0 8px; }
+        .mob-station-pill {
+            background:#52ba78; color:#fff; font-size:1.15rem; font-weight:600;
+            border-radius:14px; padding:10px 36px; display:inline-block; margin-bottom:10px; text-align:center;
+        }
+        .mob-address { font-size:.9rem; color:#111; text-align:center; line-height:1.5; }
+        .mob-voters-btn {
+            margin-top:16px; width:100%; background:#52ba78; color:#fff; border:none;
+            border-radius:16px; padding:18px 12px; font-size:.95rem; font-family:'Inter',sans-serif;
+            font-weight:500; display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer;
+        }
+        .mob-voters-btn:active { background:#3da862; }
+
+        /* ── Mobile voter card in list — matches screenshot 2 exactly ── */
+        .mob-voter-card {
+            background: #d6ede0;          /* same mint shade as screenshot 2 */
+            border-radius: 18px;
+            padding: 16px 14px 14px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .mob-voter-card .vc-surname  { font-size: 1rem;   color: #111; font-weight: 400; }
+        .mob-voter-card .vc-name     { font-size: 1rem;   color: #111; font-weight: 400; }
+        .mob-voter-card .vc-birth    { font-size: .9rem;  color: #222; margin-top: 2px; }
+        .mob-voter-card .vc-station  { font-size: 1rem;   color: #111; font-weight: 700; margin-top: 2px; }
+        .mob-voter-card .vc-address  { font-size: .82rem; color: #333; margin-top: 6px; line-height: 1.45; }
+
+        /* ── Responsive show/hide ── */
+        @media (max-width: 767px) {
+            #desktop-result-card { display: none !important; }
+            #mobile-result-card  { display: block !important; }
+            #voters-table-wrap   { display: none !important; }
+            #voters-cards-wrap   { display: block !important; }
+        }
+        @media (min-width: 768px) {
+            #mobile-result-card { display: none !important; }
+            #desktop-result-card{ display: block !important; }
+            #voters-cards-wrap  { display: none !important; }
+            #voters-table-wrap  { display: block !important; }
+        }
+        #mobile-result-card { display: none; }
+        #voters-cards-wrap  { display: none; }
     </style>
 </head>
 <body class="min-h-screen">
+<main class="max-w-4xl mx-auto p-6 pt-12">
 
-    <main class="max-w-4xl mx-auto p-6 pt-12">
-        
-        <div style="background-color: #eaf4f0;" class="rounded-[3rem] shadow-lg border border-gray-200 p-10 mb-8">
-            
-            <img src="cesko.jpg" alt="CESKO Logo" class="top-logo mb-6">
-            
-            <div class="header-text-green">გადაამოწმეთ პირადი მონაცემები და მისამართი ამომრჩეველთა ერთიან სიაში</div>
-            
-            <div class="header-text-red">ვებგვერდი განკუთვნილია მხოლოდ ამომრჩეველთათვის - საკუთარი და ოჯახის წევრების მონაცემების გადასამოწმებლად!</div>
-            
-            <div class="header-text-black">(01.02.2026 მდგომარეობით)</div>
+    <!-- ── Search form ── -->
+    <div style="background:#eaf4f0" class="rounded-[3rem] shadow-lg border border-gray-200 p-10 mb-8">
+        <img src="cesko.jpg" alt="CESKO Logo" class="top-logo mb-6">
+        <div class="header-text-green">გადაამოწმეთ პირადი მონაცემები და მისამართი ამომრჩეველთა ერთიან სიაში</div>
+        <div class="header-text-red">ვებგვერდი განკუთვნილია მხოლოდ ამომრჩეველთათვის - საკუთარი და ოჯახის წევრების მონაცემების გადასამოწმებლად!</div>
+        <div class="header-text-black">(01.02.2026 მდგომარეობით)</div>
+        <div class="flex flex-col items-center gap-4 mb-6">
+            <div class="w-full max-w-sm">
+                <input id="personalId" type="text"
+                    class="w-full p-3 bg-white border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-center data-text-regular"
+                    placeholder="პირადი ნომერი">
+            </div>
+            <div class="w-full max-w-sm">
+                <input id="lastName" type="text"
+                    class="w-full p-3 bg-white border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-center data-text-regular"
+                    placeholder="გვარი">
+            </div>
+        </div>
+        <div class="flex justify-center">
+            <button onclick="searchData()" class="py-3 btn-search text-center font-bold transition shadow-md">ძებნა</button>
+        </div>
+    </div>
 
-            <div class="flex flex-col items-center gap-4 mb-6">
-                <div class="w-full max-w-sm">
-                    <input id="personalId" type="text" class="w-full p-3 bg-white border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-center data-text-regular" placeholder="პირადი ნომერი">
+    <!-- ── Result area ── -->
+    <div id="resultArea" class="hidden">
+
+        <!-- DESKTOP result card -->
+        <div id="desktop-result-card" class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-emerald-200">
+            <div class="bg-emerald-600 p-4 text-white flex justify-between items-center">
+                <span class="text-sm font-bold tracking-widest uppercase">დადასტურებული ჩანაწერი</span>
+                <span class="text-xs font-mono opacity-80">პირადი ნომერი: <span id="res_id_head"></span></span>
+            </div>
+            <div class="p-8 flex flex-col md:flex-row gap-8">
+                <div class="w-full md:w-1/3 flex flex-col items-center">
+                    <div class="w-48 h-56 bg-white border-4 border-emerald-50 rounded-2xl overflow-hidden shadow-md">
+                        <img id="res_photo_desktop" src="" alt="ფოტო" class="object-cover w-full h-full">
+                    </div>
+                    <p class="mt-3 text-[10px] text-gray-400 font-bold uppercase tracking-tighter">ციფრული ID ფოტო</p>
                 </div>
-                <div class="w-full max-w-sm">
-                    <input id="lastName" type="text" class="w-full p-3 bg-white border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-center data-text-regular" placeholder="გვარი">
+                <div class="w-full md:w-2/3">
+                    <table class="w-full text-sm">
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 text-gray-500 font-semibold w-1/3">სახელი</td>
+                            <td class="py-3 data-text-regular" id="res_name_desktop">--</td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 text-gray-500 font-semibold">გვარი</td>
+                            <td class="py-3 data-text-regular" id="res_surname_desktop">--</td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 text-gray-500 font-semibold">საარჩევნო უბანი</td>
+                            <td class="py-3 font-bold">
+                                <a id="res_station_link_desktop" href="#" target="_blank" class="map-link">--</a>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 text-gray-500 font-semibold">დაბადების თარიღი</td>
+                            <td class="py-3 data-text-regular" id="res_birth_desktop">--</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-gray-500 font-semibold">მისამართი</td>
+                            <td class="py-3 font-bold text-gray-900 italic" id="res_address_desktop">--</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-
-            <div class="flex justify-center mb-6">
-                <div class="cf-turnstile" data-sitekey="0x4AAAAAACmL81T0pz3Xop37" data-theme="light"></div>
-            </div>
-
-            <div class="flex justify-center">
-                <button onclick="searchData()" class="py-3 btn-search text-center font-bold transition shadow-md">ძებნა</button>
+            <div class="px-8 pb-8">
+                <button onclick="viewAddressVoters()"
+                    class="w-full bg-[#10b981] hover:bg-emerald-600 text-white py-5 px-6 rounded-2xl font-medium transition shadow-lg flex flex-col items-center justify-center gap-2 text-center text-base">
+                    <span>ამ მისამართზე რეგისტრირებულ ამომრჩეველთა სია</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </button>
             </div>
         </div>
 
-        <div id="resultArea" class="hidden animate-in fade-in duration-500">
-             <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-emerald-200">
-                <div class="bg-emerald-600 p-4 text-white flex justify-between items-center">
-                    <span class="text-sm font-bold tracking-widest uppercase">დადასტურებული ჩანაწერი</span>
-                    <span class="text-xs font-mono opacity-80">პირადი ნომერი: <span id="res_id_head"></span></span>
+        <!-- MOBILE result card -->
+        <div id="mobile-result-card" style="padding:0 0 8px;">
+            <div class="mob-card">
+                <img id="res_photo_mobile" class="mob-photo" src="" alt="ფოტო">
+                <div class="mob-name">
+                    <span id="mob_surname">--</span><br>
+                    <span id="mob_firstname">--</span>
                 </div>
-                <div class="p-8 flex flex-col md:flex-row gap-8">
-                    <div class="w-full md:w-1/3 flex flex-col items-center">
-                        <div class="w-48 h-56 bg-white border-4 border-emerald-50 rounded-2xl overflow-hidden shadow-md">
-                            <img id="res_photo" src="" alt="პროფილის ფოტო" class="object-cover w-full h-full">
-                        </div>
-                        <p class="mt-3 text-[10px] text-gray-400 font-bold uppercase tracking-tighter">ციფრული ID ფოტო</p>
-                    </div>
-                    <div class="w-full md:w-2/3">
-                        <table class="w-full text-sm">
-                            <tr class="border-b border-gray-100">
-                                <td class="py-3 text-gray-500 font-semibold w-1/3">სახელი</td>
-                                <td class="py-3 data-text-regular" id="res_name">--</td>
-                            </tr>
-                            <tr class="border-b border-gray-100">
-                                <td class="py-3 text-gray-500 font-semibold">გვარი</td>
-                                <td class="py-3 data-text-regular" id="res_surname">--</td>
-                            </tr>
-                            <tr class="border-b border-gray-100">
-                                <td class="py-3 text-gray-500 font-semibold">საარჩევნო უბანი</td>
-                                <td class="py-3 font-bold">
-                                    <a id="res_station_link" href="#" target="_blank" class="map-link">09.60</a>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-100">
-                                <td class="py-3 text-gray-500 font-semibold">დაბადების თარიღი</td>
-                                <td class="py-3 data-text-regular" id="res_birth">--</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 text-gray-500 font-semibold">მისამართი</td>
-                                <td class="py-3 font-bold text-gray-900 italic" id="res_address">--</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+                <div class="mob-birth" id="mob_birth">--</div>
+                <div class="mob-type"  id="mob_type">ელექტრონული</div>
+                <a id="mob_station_link" href="#" target="_blank">
+                    <div class="mob-station-pill" id="mob_station">--</div>
+                </a>
+                <div class="mob-address" id="mob_address">--</div>
             </div>
+            <button class="mob-voters-btn" onclick="viewAddressVoters()">
+                <span>ამ მისამართზე<br>რეგისტრირებულ<br>ამომრჩეველთა სია</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </button>
         </div>
-    </main>
 
-    <script>
-        const DATA = [
-            {
-                id: "01955003022",
-                lastName: "თინიკაშვილი",
-                firstName: "ლუკა",
-                surname: "თინიკაშვილი",
-                birth: "16.01.2005",
-                mapUrl: "https://maps.app.goo.gl/cUPnXDXatdqjkmxA8",
-                address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 7ა, ბინა 18",
-                photo: "tinka.jpg"
-            },
-            {
-                id: "43650000388",
-                lastName: "ხუციშვილი",
-                firstName: "ნიკოლოზ",
-                surname: "ხუციშვილი",
-                birth: "13.12.2006",
-                mapUrl: "https://maps.app.goo.gl/cUPnXDXatdqjkmxA8",
-                address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 5, ბინა 11",
-                photo: "xuco.jpg"
-            },
-            {
-                id: "01355005230",
-                lastName: "არდაზიშვილი",
-                firstName: "ალექსანდრე",
-                surname: "არდაზიშვილი",
-                birth: "17.08.2004",
-                mapUrl: "https://maps.app.goo.gl/cUPnXDXatdqjkmxA8",
-                address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 5, ბინა 27",
-                photo: "ardaza.jpg"
-            },
-            {
-                id: "01752005600",
-                lastName: "თურმანიძე",
-                firstName: "ლაშა",
-                surname: "თურმანიძე",
-                birth: "15.09.2003",
-                mapUrl: "https://maps.app.goo.gl/cUPnXDXatdqjkmxA8",
-                address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, 11 მიკრო, 2 კვარტალი, კორპუსი 31, ბინა 13",
-                photo: "buto.jpg"
-            },
-            {
-                id: "01354003762",
-                lastName: "ბეთხოშვილი",
-                firstName: "ნუცა",
-                surname: "ბეთხოშვილი",
-                birth: "02.02.2007",
-                mapUrl: "https://maps.app.goo.gl/cUPnXDXatdqjkmxA8",
-                address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 9, ბინა 4",
-                photo: "nuca.jpg"
-           },
-           {    
-                id: "01317065103",
-                lastName: "ზაზაძე",
-                firstName: "ნიკოლოზი",
-                surname: "ზაზაძე",
-                birth: "28.11.2002",
-                mapUrl: "https://maps.app.goo.gl/yVNqBNHRTNM8E9Vs9",
-                address: "თბილისი ბეგლარ ახოსპირელის III ჩიხი N 1/17",
-                photo: "Zazadz.jpg"
-           },
-           {    
-                id: "05301013673",
-                lastName: "გვარამაძე",
-                firstName: "ნიკოლოზი",
-                surname: "გვარამაძე",
-                birth: "17.06.2002",
-                mapUrl: "https://maps.app.goo.gl/S7PF35RJNgGPWucf9",
-                address: "დ. ასპინძა სანაპიროს ქ. N 16",
-                photo: "Gvarama.jpg"
-           },
-           {    
-                id: "05501013127",
-                lastName: "ხარატიშვილი",
-                firstName: "ამირანი",
-                surname: "ხარატიშვილი",
-                birth: "07.02.2002",
-                mapUrl: "https://maps.app.goo.gl/qTWh2nTXPfjkiDUB6",
-                address: "დ. ასპინძა შ.რუსთაველის ქ. N 12",
-                photo: "1.jpg"
-           },
-           { 
-                id: "01708069303",
-                lastName: "კორკოტაშვილი",
-                firstName: "ნიკოლოზ",
-                surname: "კორკოტაშვილი",
-                birth: "05.04.2003",
-                mapUrl: "https://maps.app.goo.gl/Qwk3EZUWunXAKBNk8",
-                address: "თბილისი ზაქარია ფალიაშვილის ქ. N 33ა ბ. 15",
-                photo: "2.jpg"
-           },
-           {    
-                id: "01808066522",
-                lastName: "დემეტრაძე",
-                firstName: "ზურა",
-                surname: "დემეტრაძე",
-                birth: "05.04.2003",
-                mapUrl: "https://maps.app.goo.gl/2r5K1wPMkBfAkg4U9",
-                address: "საქართველო, ქალაქი თბილისი, ტიციან ტაბიძის ქუჩა, N 5",
-                photo: "3.jpg"
-           }
-        ];
+        <!-- DESKTOP voters table -->
+        <div id="voters-table-wrap" class="hidden mt-8 overflow-x-auto rounded-3xl border border-emerald-200 shadow-xl">
+            <table class="w-full text-sm text-left border-collapse">
+                <thead>
+                    <tr class="cec-table-header text-xs md:text-sm">
+                        <th class="p-4 border border-emerald-200">გვარი</th>
+                        <th class="p-4 border border-emerald-200">სახელი</th>
+                        <th class="p-4 border border-emerald-200">დაბ.თარიღი</th>
+                        <th class="p-4 border border-emerald-200">ოლქი/უბანი</th>
+                        <th class="p-4 border border-emerald-200">მისამართი</th>
+                    </tr>
+                </thead>
+                <tbody id="votersTableBody"></tbody>
+            </table>
+        </div>
 
-        function searchData() {
-            const turnstileInput = document.querySelector('[name="cf-turnstile-response"]');
-            if (!turnstileInput || !turnstileInput.value) {
-                alert("გთხოვთ, გაიაროთ ვერიფიკაცია!");
-                return;
-            }
+        <!-- MOBILE voters cards -->
+        <div id="voters-cards-wrap" class="hidden mt-4">
+            <div id="votersCardsList"></div>
+        </div>
 
-            const inputId = document.getElementById('personalId').value.trim();
-            const inputLn = document.getElementById('lastName').value.trim();
-            const resultArea = document.getElementById('resultArea');
+    </div>
+</main>
 
-            const found = DATA.find(p => p.id === inputId && p.lastName === inputLn);
+<script src="database.js"></script>
+<script>
+    let currentActiveCitizen = null;
 
-            if(found) {
-                document.getElementById('res_id_head').innerText = found.id;
-                document.getElementById('res_name').innerText = found.firstName;
-                document.getElementById('res_surname').innerText = found.surname;
-                document.getElementById('res_birth').innerText = found.birth;
-                document.getElementById('res_address').innerText = found.address;
-                document.getElementById('res_station_link').href = found.mapUrl;
-                document.getElementById('res_photo').src = found.photo;
-                resultArea.classList.remove('hidden');
+    function searchData() {
+        const inputId = document.getElementById('personalId').value.trim();
+        const inputLn = document.getElementById('lastName').value.trim();
+        const resultArea = document.getElementById('resultArea');
+
+        document.getElementById('voters-table-wrap').classList.add('hidden');
+        document.getElementById('voters-cards-wrap').classList.add('hidden');
+
+        const found = DATA.find(p =>
+            p.real === true &&
+            p.id === inputId &&
+            p.lastName.toLowerCase() === inputLn.toLowerCase()
+        );
+
+        if (found) {
+            currentActiveCitizen = found;
+
+            // Desktop
+            document.getElementById('res_id_head').innerText          = found.id;
+            document.getElementById('res_photo_desktop').src          = found.photo;
+            document.getElementById('res_name_desktop').innerText     = found.firstName;
+            document.getElementById('res_surname_desktop').innerText  = found.surname;
+            document.getElementById('res_birth_desktop').innerText    = found.birth;
+            document.getElementById('res_address_desktop').innerText  = found.address;
+            const dLink = document.getElementById('res_station_link_desktop');
+            dLink.href = found.mapUrl; dLink.innerText = found.station;
+
+            // Mobile
+            document.getElementById('res_photo_mobile').src   = found.photo;
+            document.getElementById('mob_surname').innerText  = found.surname;
+            document.getElementById('mob_firstname').innerText= found.firstName;
+            document.getElementById('mob_birth').innerText    = found.birth;
+            document.getElementById('mob_type').innerText     = found.stationType || 'ელექტრონული';
+            document.getElementById('mob_station').innerText  = found.station;
+            document.getElementById('mob_station_link').href  = found.mapUrl;
+            document.getElementById('mob_address').innerText  = found.address;
+
+            resultArea.classList.remove('hidden');
+            resultArea.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            currentActiveCitizen = null;
+            resultArea.classList.add('hidden');
+            alert("მონაცემები ვერ მოიძებნა!");
+        }
+    }
+
+    function buildVotersList() {
+        if (!currentActiveCitizen) return [];
+        const addr          = currentActiveCitizen.address;
+        const mainSurname   = currentActiveCitizen.surname.toLowerCase();
+
+        // All people at this address
+        const all = DATA.filter(p => p.address === addr);
+
+        // Dedup rule:
+        //   • same surname as searched person → show ALL of them
+        //   • any other surname              → show only ONE (first found)
+        const seenOther = new Set();
+        const result = [];
+        for (const p of all) {
+            const s = p.surname.toLowerCase();
+            if (s === mainSurname) {
+                result.push(p);
             } else {
-                resultArea.classList.add('hidden');
-                alert("მონაცემები ვერ მოიძებნა!");
+                if (!seenOther.has(s)) {
+                    seenOther.add(s);
+                    result.push(p);
+                }
             }
         }
-    </script>
+        return result;
+    }
+
+    function viewAddressVoters() {
+        if (!currentActiveCitizen) return;
+        const list = buildVotersList();
+
+        // Desktop table
+        const tbody = document.getElementById('votersTableBody');
+        tbody.innerHTML = '';
+        list.forEach(v => {
+            const tr = document.createElement('tr');
+            tr.className = 'cec-table-row border-b border-gray-200 text-center text-gray-800 font-medium';
+            tr.innerHTML = `
+                <td class="p-4 font-semibold text-gray-700">${v.surname}</td>
+                <td class="p-4">${v.firstName}</td>
+                <td class="p-4 font-mono">${v.birth}</td>
+                <td class="p-4 text-emerald-600 font-bold">${v.station}</td>
+                <td class="p-4 text-xs max-w-xs text-left italic font-normal text-gray-600">${v.address}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+        document.getElementById('voters-table-wrap').classList.remove('hidden');
+
+        // Mobile cards
+        const cardsList = document.getElementById('votersCardsList');
+        cardsList.innerHTML = '';
+        list.forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'mob-voter-card';
+            card.innerHTML = `
+                <div class="vc-surname">${v.surname}</div>
+                <div class="vc-name">${v.firstName}</div>
+                <div class="vc-birth">${v.birth}</div>
+                <div class="vc-station">${v.station}</div>
+                <div class="vc-address">${v.address}</div>
+            `;
+            cardsList.appendChild(card);
+        });
+        document.getElementById('voters-cards-wrap').classList.remove('hidden');
+
+        // Scroll to list
+        setTimeout(() => {
+            (document.getElementById('voters-cards-wrap').offsetParent
+                ? document.getElementById('voters-cards-wrap')
+                : document.getElementById('voters-table-wrap')
+            ).scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') searchData(); });
+</script>
 </body>
 </html>
-
