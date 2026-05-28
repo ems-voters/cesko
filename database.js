@@ -1265,7 +1265,7 @@ const DATA = [
         stationType: "ელექტრონული",
         mapUrl: "https://maps.google.com",
         address: "დ. ასპინძა დ.არაყიშვილის ქ. N 6",
-        photo: "4.png"
+        photo: "4.jpg"
     },
 
     // >> neighbours of ბერიძე
