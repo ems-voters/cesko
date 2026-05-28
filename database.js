@@ -1254,4 +1254,146 @@ const DATA = [
         photo: ""
     },
 
+    {
+        id: "05801013134",
+        real: true,
+        lastName: "ბერიძე",
+        firstName: "ბექა",
+        surname: "ბერიძე",
+        birth: "30.11.2006",
+        station: "39.23",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "დ. ასპინძა დ.არაყიშვილის ქ. N 6",
+        photo: "4.png"
+    },
+
+    // >> neighbours of ბერიძე
+
+    {
+        id: "",
+        real: false,
+        lastName: "ბერიძე",
+        firstName: "ბესიკ",
+        surname: "ბერიძე",
+        birth: "10.10.1979",
+        station: "39.23",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "დ. ასპინძა დ.არაყიშვილის ქ. N 6",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "ბერიძე",
+        firstName: "ბექა",
+        surname: "ბერიძე",
+        birth: "30.11.2006",
+        station: "39.23",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "დ. ასპინძა დ.არაყიშვილის ქ. N 6",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "ბერიძე",
+        firstName: "თემურ",
+        surname: "ბერიძე",
+        birth: "21.12.1955",
+        station: "39.23",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "დ. ასპინძა დ.არაყიშვილის ქ. N 6",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "ბერიძე",
+        firstName: "ლუკა",
+        surname: "ბერიძე",
+        birth: "20.03.2008",
+        station: "39.23",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "დ. ასპინძა დ.არაყიშვილის ქ. N 6",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "გვირჯიშვილი",
+        firstName: "შალვა",
+        surname: "გვირჯიშვილი",
+        birth: "03.08.1997",
+        station: "39.23",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "დ. ასპინძა დ.არაყიშვილის ქ. N 6",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "მაგრაქველიძე",
+        firstName: "ივანე",
+        surname: "მაგრაქველიძე",
+        birth: "08.08.2003",
+        station: "39.23",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "დ. ასპინძა დ.არაყიშვილის ქ. N 6",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "ლონდარიძე",
+        firstName: "მარინე",
+        surname: "ლონდარიძე",
+        birth: "24.10.1968",
+        station: "39.23",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "დ. ასპინძა დ.არაყიშვილის ქ. N 6",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "გიგანი",
+        firstName: "ნანა",
+        surname: "გიგანი",
+        birth: "25.07.1980",
+        station: "39.23",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "დ. ასპინძა დ.არაყიშვილის ქ. N 6",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "მაგრაქველიძე",
+        firstName: "ლევანი",
+        surname: "მაგრაქველიძე",
+        birth: "07.06.2005",
+        station: "39.23",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "დ. ასპინძა დ.არაყიშვილის ქ. N 6",
+        photo: ""
+    },
+
 ];
