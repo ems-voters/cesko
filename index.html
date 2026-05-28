@@ -5,76 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>საარჩევნო პორტალი - CEC</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; background: #fff; margin: 0; padding: 0; }
         .hidden { display: none !important; }
         .map-link { color: #10b981; text-decoration: underline; font-weight: bold; }
         .map-link:hover { color: #064e3b; }
-        .top-logo  { height:75px; width:auto; display:block; margin:0 auto 25px; }
-        .header-text-green { color:#51ba78; font-weight:500; text-align:center; margin-bottom:20px; font-size:1.125rem; }
-        .header-text-red   { color:#dc2626; text-align:center; margin-bottom:40px; font-size:.75rem; line-height:1.4; }
-        .header-text-black { color:#000; text-align:center; margin-bottom:25px; font-size:1rem; font-weight:700; }
-        .data-text-regular { font-weight:400; color:#111827; font-size:1.125rem; }
-        .btn-search { background:#88d1a5; border-radius:20px; width:220px; font-family:'Inter',sans-serif; color:#fff; }
-        .btn-search:hover { background:#76bc92; }
+        .top-logo  { height: 75px; width: auto; display: block; margin: 0 auto 25px; }
+        .header-text-green { color: #51ba78; font-weight: 500; text-align: center; margin-bottom: 20px; font-size: 1.125rem; }
+        .header-text-red   { color: #dc2626; text-align: center; margin-bottom: 40px; font-size: .75rem; line-height: 1.4; }
+        .header-text-black { color: #000; text-align: center; margin-bottom: 25px; font-size: 1rem; font-weight: 700; }
+        .data-text-regular { font-weight: 400; color: #111827; font-size: 1.125rem; }
 
-        /* ── Desktop table ── */
-        .cec-table-header { background:#52ba78; color:#fff; font-weight:bold; text-align:center; }
-        .cec-table-row:nth-child(even) { background:#f4fbf7; }
-        .cec-table-row:nth-child(odd)  { background:#fff; }
+        /* Search button — disabled state */
+        #btn-search {
+            background: #b0d9bf;
+            border-radius: 20px;
+            width: 220px;
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            cursor: not-allowed;
+            opacity: 0.7;
+            transition: background .2s, opacity .2s;
+        }
+        #btn-search.verified {
+            background: #52ba78;
+            cursor: pointer;
+            opacity: 1;
+        }
+        #btn-search.verified:hover { background: #3da862; }
 
-        /* ── Mobile result card (search result) ── */
+        /* Turnstile wrapper — center it */
+        #turnstile-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        /* ── Shared voters table ── */
+        .cec-table-header { background: #52ba78; color: #fff; font-weight: bold; text-align: center; }
+        .cec-table-row:nth-child(even) { background: #f4fbf7; }
+        .cec-table-row:nth-child(odd)  { background: #fff; }
+
+        /* ── Mobile result card (personal result) ── */
         .mob-card {
-            background:#eaf5ee; border:2px solid #52ba78; border-radius:24px;
-            padding:24px 20px 20px; display:flex; flex-direction:column;
-            align-items:center; gap:6px;
+            background: #eaf5ee; border: 2px solid #52ba78; border-radius: 24px;
+            padding: 24px 20px 20px; display: flex; flex-direction: column;
+            align-items: center; gap: 6px;
         }
-        .mob-photo { width:130px; height:160px; object-fit:cover; border-radius:6px; margin-bottom:10px; display:block; }
-        .mob-name  { font-size:1.1rem; font-weight:500; color:#111; text-align:center; line-height:1.4; }
-        .mob-birth { font-size:.95rem; color:#111; text-align:center; }
-        .mob-type  { font-size:1rem; color:#52ba78; font-weight:500; text-align:center; margin:2px 0 8px; }
+        .mob-photo { width: 130px; height: 160px; object-fit: cover; border-radius: 6px; margin-bottom: 10px; display: block; }
+        .mob-name  { font-size: 1.1rem; font-weight: 500; color: #111; text-align: center; line-height: 1.4; }
+        .mob-birth { font-size: .95rem; color: #111; text-align: center; }
+        .mob-type  { font-size: 1rem; color: #52ba78; font-weight: 500; text-align: center; margin: 2px 0 8px; }
         .mob-station-pill {
-            background:#52ba78; color:#fff; font-size:1.15rem; font-weight:600;
-            border-radius:14px; padding:10px 36px; display:inline-block; margin-bottom:10px; text-align:center;
+            background: #52ba78; color: #fff; font-size: 1.15rem; font-weight: 600;
+            border-radius: 14px; padding: 10px 36px; display: inline-block; margin-bottom: 10px; text-align: center;
         }
-        .mob-address { font-size:.9rem; color:#111; text-align:center; line-height:1.5; }
+        .mob-address { font-size: .9rem; color: #111; text-align: center; line-height: 1.5; }
         .mob-voters-btn {
-            margin-top:16px; width:100%; background:#52ba78; color:#fff; border:none;
-            border-radius:16px; padding:18px 12px; font-size:.95rem; font-family:'Inter',sans-serif;
-            font-weight:500; display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer;
+            margin-top: 16px; width: 100%; background: #52ba78; color: #fff; border: none;
+            border-radius: 16px; padding: 18px 12px; font-size: .95rem; font-family: 'Inter', sans-serif;
+            font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;
         }
-        .mob-voters-btn:active { background:#3da862; }
+        .mob-voters-btn:active { background: #3da862; }
 
-        /* ── Mobile voter card in list — matches screenshot 2 exactly ── */
-        .mob-voter-card {
-            background: #d6ede0;          /* same mint shade as screenshot 2 */
-            border-radius: 18px;
-            padding: 16px 14px 14px;
-            margin-bottom: 10px;
-            text-align: center;
+        /* ── Voters list table — shared for both mobile and desktop ── */
+        #voters-table-wrap {
+            margin-top: 24px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1.5px solid #a8d9bc;
+            box-shadow: 0 4px 24px rgba(82,186,120,.10);
         }
-        .mob-voter-card .vc-surname  { font-size: 1rem;   color: #111; font-weight: 400; }
-        .mob-voter-card .vc-name     { font-size: 1rem;   color: #111; font-weight: 400; }
-        .mob-voter-card .vc-birth    { font-size: .9rem;  color: #222; margin-top: 2px; }
-        .mob-voter-card .vc-station  { font-size: 1rem;   color: #111; font-weight: 700; margin-top: 2px; }
-        .mob-voter-card .vc-address  { font-size: .82rem; color: #333; margin-top: 6px; line-height: 1.45; }
+        /* On mobile make it scrollable horizontally */
+        #voters-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        #voters-table-scroll table { min-width: 480px; width: 100%; border-collapse: collapse; font-size: .875rem; }
+        #voters-table-scroll th { background: #52ba78; color: #fff; font-weight: 600; padding: 12px 14px; text-align: center; white-space: nowrap; }
+        #voters-table-scroll td { padding: 11px 14px; text-align: center; border-bottom: 1px solid #e6f5ec; color: #222; }
+        #voters-table-scroll tr:last-child td { border-bottom: none; }
+        #voters-table-scroll tr:nth-child(even) td { background: #f4fbf7; }
+        #voters-table-scroll tr:nth-child(odd)  td { background: #fff; }
+        .td-station { color: #2d9e5f; font-weight: 700; }
+        .td-surname { font-weight: 600; }
+        .td-address { text-align: left !important; font-size: .78rem; color: #555; font-style: italic; max-width: 200px; }
 
-        /* ── Responsive show/hide ── */
+        /* ── Responsive show/hide for result card ── */
         @media (max-width: 767px) {
             #desktop-result-card { display: none !important; }
             #mobile-result-card  { display: block !important; }
-            #voters-table-wrap   { display: none !important; }
-            #voters-cards-wrap   { display: block !important; }
         }
         @media (min-width: 768px) {
-            #mobile-result-card { display: none !important; }
-            #desktop-result-card{ display: block !important; }
-            #voters-cards-wrap  { display: none !important; }
-            #voters-table-wrap  { display: block !important; }
+            #mobile-result-card  { display: none !important; }
+            #desktop-result-card { display: block !important; }
         }
         #mobile-result-card { display: none; }
-        #voters-cards-wrap  { display: none; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -86,6 +112,7 @@
         <div class="header-text-green">გადაამოწმეთ პირადი მონაცემები და მისამართი ამომრჩეველთა ერთიან სიაში</div>
         <div class="header-text-red">ვებგვერდი განკუთვნილია მხოლოდ ამომრჩეველთათვის - საკუთარი და ოჯახის წევრების მონაცემების გადასამოწმებლად!</div>
         <div class="header-text-black">(01.02.2026 მდგომარეობით)</div>
+
         <div class="flex flex-col items-center gap-4 mb-6">
             <div class="w-full max-w-sm">
                 <input id="personalId" type="text"
@@ -98,8 +125,17 @@
                     placeholder="გვარი">
             </div>
         </div>
+
+        <!-- Cloudflare Turnstile widget -->
+        <div id="turnstile-wrap">
+            <div class="cf-turnstile"
+                 data-sitekey="0x4AAAAAACmL81T0pz3Xop37"
+                 data-theme="light">
+            </div>
+        </div>
+
         <div class="flex justify-center">
-            <button onclick="searchData()" class="py-3 btn-search text-center font-bold transition shadow-md">ძებნა</button>
+            <button id="btn-search" onclick="searchData()" class="py-3 text-center font-bold shadow-md" disabled>ძებნა</button>
         </div>
     </div>
 
@@ -180,41 +216,58 @@
             </button>
         </div>
 
-        <!-- DESKTOP voters table -->
-        <div id="voters-table-wrap" class="hidden mt-8 overflow-x-auto rounded-3xl border border-emerald-200 shadow-xl">
-            <table class="w-full text-sm text-left border-collapse">
-                <thead>
-                    <tr class="cec-table-header text-xs md:text-sm">
-                        <th class="p-4 border border-emerald-200">გვარი</th>
-                        <th class="p-4 border border-emerald-200">სახელი</th>
-                        <th class="p-4 border border-emerald-200">დაბ.თარიღი</th>
-                        <th class="p-4 border border-emerald-200">ოლქი/უბანი</th>
-                        <th class="p-4 border border-emerald-200">მისამართი</th>
-                    </tr>
-                </thead>
-                <tbody id="votersTableBody"></tbody>
-            </table>
+        <!-- ── Voters list — ONE shared table (scrollable on mobile) ── -->
+        <div id="voters-table-wrap" class="hidden">
+            <div id="voters-table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>გვარი</th>
+                            <th>სახელი</th>
+                            <th>დაბ. თარიღი</th>
+                            <th>უბანი</th>
+                            <th>მისამართი</th>
+                        </tr>
+                    </thead>
+                    <tbody id="votersTableBody"></tbody>
+                </table>
+            </div>
         </div>
 
-        <!-- MOBILE voters cards -->
-        <div id="voters-cards-wrap" class="hidden mt-4">
-            <div id="votersCardsList"></div>
-        </div>
-
-    </div>
+    </div><!-- /resultArea -->
 </main>
 
 <script src="database.js"></script>
 <script>
     let currentActiveCitizen = null;
 
+    // Poll for the hidden cf-turnstile-response input Cloudflare injects after passing
+    const turnstilePoller = setInterval(() => {
+        const input = document.querySelector('[name="cf-turnstile-response"]');
+        if (input && input.value) {
+            clearInterval(turnstilePoller);
+            const btn = document.getElementById('btn-search');
+            btn.disabled = false;
+            btn.classList.add('verified');
+        }
+    }, 300);
+
+    function isTurnstilePassed() {
+        const input = document.querySelector('[name="cf-turnstile-response"]');
+        return input && input.value;
+    }
+
     function searchData() {
+        if (!isTurnstilePassed()) {
+            alert("გთხოვთ, გაიაროთ ვერიფიკაცია!");
+            return;
+        }
+
         const inputId = document.getElementById('personalId').value.trim();
         const inputLn = document.getElementById('lastName').value.trim();
         const resultArea = document.getElementById('resultArea');
 
         document.getElementById('voters-table-wrap').classList.add('hidden');
-        document.getElementById('voters-cards-wrap').classList.add('hidden');
 
         const found = DATA.find(p =>
             p.real === true &&
@@ -225,7 +278,7 @@
         if (found) {
             currentActiveCitizen = found;
 
-            // Desktop
+            // Desktop fields
             document.getElementById('res_id_head').innerText          = found.id;
             document.getElementById('res_photo_desktop').src          = found.photo;
             document.getElementById('res_name_desktop').innerText     = found.firstName;
@@ -235,15 +288,15 @@
             const dLink = document.getElementById('res_station_link_desktop');
             dLink.href = found.mapUrl; dLink.innerText = found.station;
 
-            // Mobile
-            document.getElementById('res_photo_mobile').src   = found.photo;
-            document.getElementById('mob_surname').innerText  = found.surname;
-            document.getElementById('mob_firstname').innerText= found.firstName;
-            document.getElementById('mob_birth').innerText    = found.birth;
-            document.getElementById('mob_type').innerText     = found.stationType || 'ელექტრონული';
-            document.getElementById('mob_station').innerText  = found.station;
-            document.getElementById('mob_station_link').href  = found.mapUrl;
-            document.getElementById('mob_address').innerText  = found.address;
+            // Mobile fields
+            document.getElementById('res_photo_mobile').src    = found.photo;
+            document.getElementById('mob_surname').innerText   = found.surname;
+            document.getElementById('mob_firstname').innerText = found.firstName;
+            document.getElementById('mob_birth').innerText     = found.birth;
+            document.getElementById('mob_type').innerText      = found.stationType || 'ელექტრონული';
+            document.getElementById('mob_station').innerText   = found.station;
+            document.getElementById('mob_station_link').href   = found.mapUrl;
+            document.getElementById('mob_address').innerText   = found.address;
 
             resultArea.classList.remove('hidden');
             resultArea.scrollIntoView({ behavior: 'smooth' });
@@ -256,15 +309,11 @@
 
     function buildVotersList() {
         if (!currentActiveCitizen) return [];
-        const addr          = currentActiveCitizen.address;
-        const mainSurname   = currentActiveCitizen.surname.toLowerCase();
+        const addr        = currentActiveCitizen.address;
+        const mainSurname = currentActiveCitizen.surname.toLowerCase();
+        const all         = DATA.filter(p => p.address === addr);
 
-        // All people at this address
-        const all = DATA.filter(p => p.address === addr);
-
-        // Dedup rule:
-        //   • same surname as searched person → show ALL of them
-        //   • any other surname              → show only ONE (first found)
+        // Same surname → show ALL; other surnames → one representative each
         const seenOther = new Set();
         const result = [];
         for (const p of all) {
@@ -283,52 +332,32 @@
 
     function viewAddressVoters() {
         if (!currentActiveCitizen) return;
-        const list = buildVotersList();
-
-        // Desktop table
+        const list  = buildVotersList();
         const tbody = document.getElementById('votersTableBody');
+
         tbody.innerHTML = '';
         list.forEach(v => {
             const tr = document.createElement('tr');
-            tr.className = 'cec-table-row border-b border-gray-200 text-center text-gray-800 font-medium';
             tr.innerHTML = `
-                <td class="p-4 font-semibold text-gray-700">${v.surname}</td>
-                <td class="p-4">${v.firstName}</td>
-                <td class="p-4 font-mono">${v.birth}</td>
-                <td class="p-4 text-emerald-600 font-bold">${v.station}</td>
-                <td class="p-4 text-xs max-w-xs text-left italic font-normal text-gray-600">${v.address}</td>
+                <td class="td-surname">${v.surname}</td>
+                <td>${v.firstName}</td>
+                <td>${v.birth}</td>
+                <td class="td-station">${v.station}</td>
+                <td class="td-address">${v.address}</td>
             `;
             tbody.appendChild(tr);
         });
+
         document.getElementById('voters-table-wrap').classList.remove('hidden');
-
-        // Mobile cards
-        const cardsList = document.getElementById('votersCardsList');
-        cardsList.innerHTML = '';
-        list.forEach(v => {
-            const card = document.createElement('div');
-            card.className = 'mob-voter-card';
-            card.innerHTML = `
-                <div class="vc-surname">${v.surname}</div>
-                <div class="vc-name">${v.firstName}</div>
-                <div class="vc-birth">${v.birth}</div>
-                <div class="vc-station">${v.station}</div>
-                <div class="vc-address">${v.address}</div>
-            `;
-            cardsList.appendChild(card);
-        });
-        document.getElementById('voters-cards-wrap').classList.remove('hidden');
-
-        // Scroll to list
         setTimeout(() => {
-            (document.getElementById('voters-cards-wrap').offsetParent
-                ? document.getElementById('voters-cards-wrap')
-                : document.getElementById('voters-table-wrap')
-            ).scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('voters-table-wrap').scrollIntoView({ behavior: 'smooth' });
         }, 50);
     }
 
-    document.addEventListener('keydown', e => { if (e.key === 'Enter') searchData(); });
+    // Enter key → search (only if verified)
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && isTurnstilePassed()) searchData();
+    });
 </script>
 </body>
 </html>
