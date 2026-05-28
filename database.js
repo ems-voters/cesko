@@ -323,6 +323,76 @@ const DATA = [
     // >> neighbours of ზაზაძე
 
     {
+        id: "",
+        real: false,
+        lastName: "სიმონიანი",
+        firstName: "ლევან",
+        surname: "სიმონიანი",
+        birth: "10.07.1950",
+        station: "04.03",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "თბილისი ბეგლარ ახოსპირელის III ჩიხი N 1/17",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "პარიზიანი",
+        firstName: "ოთარი",
+        surname: "პარიზიანი",
+        birth: "19.06.1997",
+        station: "04.03",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "თბილისი ბეგლარ ახოსპირელის III ჩიხი N 1/17",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "კურტანიძე",
+        firstName: "ლაშა",
+        surname: "კურტანიძე",
+        birth: "02.03.1983",
+        station: "04.03",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "თბილისი ბეგლარ ახოსპირელის III ჩიხი N 1/17",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "ფარესიშვილი",
+        firstName: "აკაკი",
+        surname: "ფარესიშვილი",
+        birth: "10.12.1991",
+        station: "04.03",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "თბილისი ბეგლარ ახოსპირელის III ჩიხი N 1/17",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "მარტიროსოვი",
+        firstName: "ედუარდ",
+        surname: "მარტიროსოვი",
+        birth: "30.01.2001",
+        station: "04.03",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "თბილისი ბეგლარ ახოსპირელის III ჩიხი N 1/17",
+        photo: ""
+    },
+
+    {
         id: "05301013673",
         real: true,
         lastName: "გვარამაძე",
