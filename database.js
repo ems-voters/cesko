@@ -1260,7 +1260,7 @@ const DATA = [
         lastName: "ბერიძე",
         firstName: "ბექა",
         surname: "ბერიძე",
-        birth: "30.11.2006",
+        birth: "30.11.2002",
         station: "39.23",
         stationType: "ელექტრონული",
         mapUrl: "https://maps.google.com",
