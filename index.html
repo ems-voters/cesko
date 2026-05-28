@@ -71,25 +71,35 @@
         }
         .mob-voters-btn:active { background: #3da862; }
 
-        /* ── Voters list table — shared for both mobile and desktop ── */
-        #voters-table-wrap {
-            margin-top: 24px;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1.5px solid #a8d9bc;
-            box-shadow: 0 4px 24px rgba(82,186,120,.10);
-        }
-        /* On mobile make it scrollable horizontally */
-        #voters-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        #voters-table-scroll table { min-width: 480px; width: 100%; border-collapse: collapse; font-size: .875rem; }
-        #voters-table-scroll th { background: #52ba78; color: #fff; font-weight: 600; padding: 12px 14px; text-align: center; white-space: nowrap; }
-        #voters-table-scroll td { padding: 11px 14px; text-align: center; border-bottom: 1px solid #e6f5ec; color: #222; }
-        #voters-table-scroll tr:last-child td { border-bottom: none; }
-        #voters-table-scroll tr:nth-child(even) td { background: #f4fbf7; }
-        #voters-table-scroll tr:nth-child(odd)  td { background: #fff; }
+        /* ── Voters list ── */
+        #voters-table-wrap { margin-top: 16px; }
+
+        .voters-desktop { border-radius: 20px; overflow: hidden; border: 1.5px solid #a8d9bc; }
+        .voters-desktop table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+        .voters-desktop th { background: #52ba78; color: #fff; font-weight: 600; padding: 12px 14px; text-align: center; }
+        .voters-desktop td { padding: 11px 14px; text-align: center; border-bottom: 1px solid #e6f5ec; color: #222; }
+        .voters-desktop tr:last-child td { border-bottom: none; }
+        .voters-desktop tr:nth-child(even) td { background: #f4fbf7; }
+        .voters-desktop tr:nth-child(odd)  td { background: #fff; }
         .td-station { color: #2d9e5f; font-weight: 700; }
         .td-surname { font-weight: 600; }
-        .td-address { text-align: left !important; font-size: .78rem; color: #555; font-style: italic; max-width: 200px; }
+        .td-address { text-align: left !important; font-size: .78rem; color: #555; font-style: italic; }
+
+        /* One big container, rows inside */
+        #voters-cards {
+            background: #d5ece0;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+        .voter-row {
+            padding: 13px 16px 11px;
+            text-align: center;
+            border-bottom: 1px solid #b8d9c6;
+        }
+        .voter-row:last-child { border-bottom: none; }
+        .voter-row div { line-height: 1.65; font-size: .97rem; color: #111; }
+        .voter-row .vc-station { font-weight: 700; }
+        .voter-row .vc-address { font-size: .81rem; color: #333; margin-top: 2px; line-height: 1.4; }
 
         /* ── Responsive show/hide for result card ── */
         @media (max-width: 767px) {
@@ -216,22 +226,19 @@
             </button>
         </div>
 
-        <!-- ── Voters list — ONE shared table (scrollable on mobile) ── -->
+        <!-- ── Voters list ── -->
         <div id="voters-table-wrap" class="hidden">
-            <div id="voters-table-scroll">
+            <!-- Desktop table -->
+            <div class="voters-desktop hidden" id="voters-desktop">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>გვარი</th>
-                            <th>სახელი</th>
-                            <th>დაბ. თარიღი</th>
-                            <th>უბანი</th>
-                            <th>მისამართი</th>
-                        </tr>
-                    </thead>
+                    <thead><tr>
+                        <th>გვარი</th><th>სახელი</th><th>დაბ. თარიღი</th><th>უბანი</th><th>მისამართი</th>
+                    </tr></thead>
                     <tbody id="votersTableBody"></tbody>
                 </table>
             </div>
+            <!-- Mobile cards -->
+            <div id="voters-cards"></div>
         </div>
 
     </div><!-- /resultArea -->
@@ -332,21 +339,45 @@
 
     function viewAddressVoters() {
         if (!currentActiveCitizen) return;
-        const list  = buildVotersList();
-        const tbody = document.getElementById('votersTableBody');
+        const list = buildVotersList();
+        const isMobile = window.innerWidth < 768;
 
-        tbody.innerHTML = '';
-        list.forEach(v => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td class="td-surname">${v.surname}</td>
-                <td>${v.firstName}</td>
-                <td>${v.birth}</td>
-                <td class="td-station">${v.station}</td>
-                <td class="td-address">${v.address}</td>
-            `;
-            tbody.appendChild(tr);
-        });
+        if (isMobile) {
+            // Cards view
+            const cards = document.getElementById('voters-cards');
+            document.getElementById('voters-desktop').classList.add('hidden');
+            cards.innerHTML = '';
+            list.forEach(v => {
+                const row = document.createElement('div');
+                row.className = 'voter-row';
+                row.innerHTML = `
+                    <div>${v.surname}</div>
+                    <div>${v.firstName}</div>
+                    <div>${v.birth}</div>
+                    <div class="vc-station">${v.station}</div>
+                    <div class="vc-address">${v.address}</div>
+                `;
+                cards.appendChild(row);
+            });
+        } else {
+            // Desktop table
+            document.getElementById('voters-cards').innerHTML = '';
+            const desktop = document.getElementById('voters-desktop');
+            desktop.classList.remove('hidden');
+            const tbody = document.getElementById('votersTableBody');
+            tbody.innerHTML = '';
+            list.forEach(v => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="td-surname">${v.surname}</td>
+                    <td>${v.firstName}</td>
+                    <td>${v.birth}</td>
+                    <td class="td-station">${v.station}</td>
+                    <td class="td-address">${v.address}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
 
         document.getElementById('voters-table-wrap').classList.remove('hidden');
         setTimeout(() => {
