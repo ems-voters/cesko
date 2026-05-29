@@ -59,6 +59,107 @@ const DATA = [
         address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 7ა, ბინა 18",
         photo: ""
     },
+    
+    {
+        id: "01801113250",
+        real: true,
+        lastName: "გოგოლაშვილი",
+        firstName: "გიორგი",
+        surname: "გოგოლაშვილი",
+        birth: "16.11.2003",
+        station: "09.60",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 6, ბინა 37",
+        photo: "gogola.jpg"
+    }, 
+
+    // >> neighbours of გოგოლაშვილი
+    
+    {
+        id: "",
+        real: false,
+        lastName: "გოგოლაშვილი",
+        firstName: "მამუკა",
+        surname: "გოგოლაშვილი",
+        birth: "03.07.1978",
+        station: "09.60",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 6, ბინა 37",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "ეკატერინე",
+        firstName: "კიკნაძე",
+        surname: "გოგოლაშვილი",
+        birth: "14.11.1975",
+        station: "09.60",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 6, ბინა 37",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "კვირიკაშვილი",
+        firstName: "ანა",
+        surname: "კვირიკაშვილი",
+        birth: "22.04.2001",
+        station: "09.60",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 6, ბინა 37",
+        photo: ""
+    },
+
+    // >> neighbours of გოგოლაშვილი
+    {
+        id: "",
+        real: false,
+        lastName: "თინიკაშვილი",
+        firstName: "მარიამ",
+        surname: "თინიკაშვილი",
+        birth: "03.07.1978",
+        station: "09.60",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 7ა, ბინა 18",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "თინიკაშვილი",
+        firstName: "გიორგი",
+        surname: "თინიკაშვილი",
+        birth: "14.11.1975",
+        station: "09.60",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 7ა, ბინა 18",
+        photo: ""
+    },
+
+    {
+        id: "",
+        real: false,
+        lastName: "კვირიკაშვილი",
+        firstName: "ანა",
+        surname: "კვირიკაშვილი",
+        birth: "22.04.2001",
+        station: "09.60",
+        stationType: "ელექტრონული",
+        mapUrl: "https://maps.google.com",
+        address: "საქართველო, ქალაქი თბილისი, ზღვის უბნის დასახლება, IV კვარტალი, კორპუსი 7ა, ბინა 18",
+        photo: ""
+    },
 
     {
         id: "43650000388",
