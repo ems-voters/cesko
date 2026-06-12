@@ -8,7 +8,7 @@ const DATA = [
         lastName: "თინიკაშვილი",
         firstName: "ლუკა",
         surname: "თინიკაშვილი",
-        birth: "16.01.2003",
+        birth: "16.01.2008",
         station: "09.60",
         stationType: "ელექტრონული",
         mapUrl: "https://maps.google.com",
